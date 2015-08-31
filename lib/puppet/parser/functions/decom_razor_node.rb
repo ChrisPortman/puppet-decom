@@ -24,9 +24,9 @@ module Puppet::Parser::Functions
     Net::HTTP.start(host) do |http|
       case action
       when 'reinstall'
-        request = Net::HTTP::Post.new("/api/reinstall-node", initheader = { 'Content-Type' => 'application/json' })
+        request = Net::HTTP::Post.new("/api/commands/reinstall-node", initheader = { 'Content-Type' => 'application/json' })
       when 'decommission'
-        request = Net::HTTP::Post.new("/api/delete-node", initheader = { 'Content-Type' => 'application/json' })
+        request = Net::HTTP::Post.new("/api/commands/delete-node", initheader = { 'Content-Type' => 'application/json' })
       else
         raise Puppet::ParseError, 'decom_razor_node(): second argument must be one of "reinstall" or "decommission".'
       end
