@@ -46,15 +46,16 @@ module Puppet::Parser::Functions
       http.cert    = OpenSSL::X509::Certificate.new(File.read(cert_files[:cert]))
       http.key     = OpenSSL::PKey::RSA.new(File.read(cert_files[:key]))
       http.ca_file = cert_files[:cacert]
+      path = "/#{env}/certificate_status/#{cert}"
 
-      request = Net::HTTP::Put.new("/#{env}/certificate_status/#{cert}", initheader = { 'Content-Type' => 'text/pson'})
+      request = Net::HTTP::Put.new(path, initheader = { 'Content-Type' => 'text/pson'})
       request.body = '{"desired_state":"revoked"}'
       info("Revoke request: #{request.inspect}")
       response = http.request(request)
       (response.code.to_i >= 200 and response.code.to_i <= 299) or
        raise Puppet::ParseError, "decom_clean_cert(): failed to revoke certificate. Response #{response.code}."
 
-      request = Net::HTTP::Delete.new("/#{env}/certificate_status/#{cert}", initheader = { 'Accept' => 'pson'})
+      request = Net::HTTP::Delete.new(path, initheader = { 'Accept' => 'pson'})
       info("Delete request: #{request.inspect}")
       response = http.request(request)
       (response.code.to_i >= 200 and response.code.to_i <= 299) or
