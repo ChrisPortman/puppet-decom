@@ -39,8 +39,7 @@ module Puppet::Parser::Functions
       File.readable?(f) or raise Puppet::ParseError, "decom_clean_cert(): Could not read #{k} file: #{f}"
     end
 
-    Net::HTTP.start(cahost, 8140) do |http|
-      http.use_ssl = true
+    Net::HTTP.start(cahost, 8140, :use_ssl => true) do |http|
       http.cert    = OpenSSL::X509::Certificate.new(cert_files[:cert])
       http.key     = OpenSSL::PKey::RSA.new(cert_files[:key])
       http.ca_file = cert_files[:cacert]
