@@ -47,6 +47,7 @@ module Puppet::Parser::Functions
       http.key     = OpenSSL::PKey::RSA.new(File.read(cert_files[:key]))
       http.ca_file = cert_files[:cacert]
       path = "/#{env}/certificate_status/#{cert}"
+      info("Decom cert cleaning using path: #{path}")
 
       request = Net::HTTP::Put.new(path, initheader = { 'Content-Type' => 'text/pson'})
       request.body = '{"desired_state":"revoked"}'
