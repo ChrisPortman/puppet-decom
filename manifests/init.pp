@@ -7,7 +7,7 @@ class decom (
 
   validate_string($mode, $confirm)
 
-  unless $confirm == $::certname {
+  unless $confirm == $::trusted['certname'] {
     fail("Confirmation failed for decom")
   }
 
