@@ -41,7 +41,7 @@ module Puppet::Parser::Functions
     end
 
     info("Connecting to CA at #{cahost}")
-    Net::HTTP.start(cahost, 8140, :use_ssl => true) do |http|
+    Net::HTTP.start(cahost, 8140, :use_ssl => true, :verify_mode => OpenSSL::SSL::VERIFY_NONE) do |http|
       info("Connected to CA at #{cahost}")
       http.cert    = OpenSSL::X509::Certificate.new(cert_files[:cert])
       http.key     = OpenSSL::PKey::RSA.new(cert_files[:key])
