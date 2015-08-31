@@ -11,7 +11,7 @@ module Puppet::Parser::Functions
     cert = args.shift
     cert.is_a?(String) or raise Puppet::ParseError, "decom_deactivate_node(); argument should be a string"
 
-    %x{puppet node deactivate #{cert}}
+    %x{ ( sleep 60 ; puppet node deactivate #{cert} ) & }
   end
 end
 
