@@ -30,7 +30,7 @@ module Puppet::Parser::Functions
     master_certname = %x{hostname}.chomp
 
     cert_files = {
-      :cacert => File.join(ssl_path, 'certs', 'ca.cert'),
+      :cacert => File.join(ssl_path, 'certs', 'ca.pem'),
       :cert   => File.join(ssl_path, 'certs', "#{master_certname}.pem"),
       :key    => File.join(ssl_path, 'private_keys', "#{master_certname}.pem"),
     }
