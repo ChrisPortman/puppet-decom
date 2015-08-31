@@ -19,19 +19,20 @@ module Puppet::Parser::Functions
     env.is_a?(String)    or raise Puppet::ParseError, "decom_clean_cert(): second argument must be a string"
     cahost.is_a?(String) or raise Puppet::ParseError, "decom_clean_cert(): third argument must be a string"
 
+    ssl_path = nil
     ['/etc/puppetlabs/puppet/ssl', '/etc/puppet/ssl'].each do |path|
       if File.directory?(path)
         ssl_path = path
       end
     end
 
-    certs_path or raise Puppet::ParseError, 'decom_clean_cert(): Could not determine location of certificates'
+    ssl_path or raise Puppet::ParseError, 'decom_clean_cert(): Could not determine location of certificates'
     master_certname = %x{hostname}.chomp
 
     cert_files = {
-      :cacert => File.join(certs_path, 'certs', 'ca.cert'),
-      :cert   => File.join(certs_path, 'certs', "#{master_certname}.pem"),
-      :key    => File.join(certs_path, 'private_keys', "#{master_certname}.pem"),
+      :cacert => File.join(ssl_path, 'certs', 'ca.cert'),
+      :cert   => File.join(ssl_path, 'certs', "#{master_certname}.pem"),
+      :key    => File.join(ssl_path, 'private_keys', "#{master_certname}.pem"),
     }
 
     cert_files.each do |k,f|
