@@ -14,7 +14,7 @@ class decom::decommission {
 
   exec { "REBOOT_${decom::certname}":
     command => '/usr/bin/reboot --force',
-    require => Exec["DHCP_RELEASE_${::certname}"],
+    require => Exec["DHCP_RELEASE_${decom::certname}"],
   }
 }
 
