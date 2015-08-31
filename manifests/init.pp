@@ -12,6 +12,8 @@ class decom (
     fail("Confirmation failed for decom")
   }
 
+  $certname = $::trusted['certname']
+
   case $mode {
     'decommission': { include decom::decommission }
     'reinstall':    { include decom::reinstall    }
