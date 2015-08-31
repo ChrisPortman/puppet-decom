@@ -43,19 +43,19 @@ module Puppet::Parser::Functions
     info("Connecting to CA at #{cahost}")
     Net::HTTP.start(cahost, 8140, :use_ssl => true, :verify_mode => OpenSSL::SSL::VERIFY_NONE) do |http|
       info("Connected to CA at #{cahost}")
-      http.cert    = OpenSSL::X509::Certificate.new(cert_files[:cert])
-      http.key     = OpenSSL::PKey::RSA.new(cert_files[:key])
+      http.cert    = OpenSSL::X509::Certificate.new(File.read(cert_files[:cert]))
+      http.key     = OpenSSL::PKey::RSA.new(File.read(cert_files[:key]))
       http.ca_file = cert_files[:cacert]
 
       request = Net::HTTP::Put.new("/#{env}/certificate_status/#{cert}", initheader = { 'Content-Type' => 'text/pson'})
       request.body = '{"desired_state":"revoked"}'
       response = http.request(request)
-      (response.code.to_i >= 200 and response.code.to_i <= 299) or 
+      (response.code.to_i >= 200 and response.code.to_i <= 299) or
        raise Puppet::ParseError, "decom_clean_cert(): failed to revoke certificate. Response #{response.code}."
 
       request = Net::HTTP::Delete.new("/#{env}/certificate_status/#{cert}", initheader = { 'Accept' => 'pson'})
       response = http.request(request)
-      (response.code.to_i >= 200 and response.code.to_i <= 299) or 
+      (response.code.to_i >= 200 and response.code.to_i <= 299) or
         raise Puppet::ParseError, "decom_clean_cert(): failed to delete certificate. Response #{response.code}."
     end
   end
