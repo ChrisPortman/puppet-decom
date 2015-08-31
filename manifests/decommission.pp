@@ -1,7 +1,4 @@
 class decom::decommission {
-  #Clean cert
-  decom_clean_cert($::certname, $::environment, $decom::ca_host)
-
   #Deactivate the node in Puppetdb
   decom_deactivate_node($::certname)
 
@@ -11,6 +8,9 @@ class decom::decommission {
   exec { "DHCP_RELEASE_${::certname}":
     command => '/sbin/dhclient -r',
   }
+
+  #Clean cert
+  decom_clean_cert($::certname, $::environment, $decom::ca_host)
 
   exec { "REBOOT_${::certname}":
     command => '/usr/bin/reboot --force',
