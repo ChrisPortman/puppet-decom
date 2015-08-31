@@ -41,11 +41,15 @@ module Puppet::Parser::Functions
     end
 
     info("Connecting to CA at #{cahost}")
-    Net::HTTP.start(cahost, 8140, :use_ssl => true, :verify_mode => OpenSSL::SSL::VERIFY_NONE) do |http|
+    http             = Net::HTTP.new(cahost, 8140)
+    http.use_ssl     = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    http.cert        = OpenSSL::X509::Certificate.new(File.read(cert_files[:cert]))
+    http.key         = OpenSSL::PKey::RSA.new(File.read(cert_files[:key]))
+    http.ca_file     = cert_files[:cacert]
+
+    http.start do |http|
       info("Connected to CA at #{cahost}")
-      http.cert    = OpenSSL::X509::Certificate.new(File.read(cert_files[:cert]))
-      http.key     = OpenSSL::PKey::RSA.new(File.read(cert_files[:key]))
-      http.ca_file = cert_files[:cacert]
       path = "/#{env}/certificate_status/#{cert}"
       info("Decom cert cleaning using path: #{path}")
 
