@@ -8,7 +8,7 @@ class decom::reinstall {
   #Clean cert
   decom_clean_cert($decom::certname, $::environment, $decom::ca_host)
 
-  exec { "REBOOT_${::certname}":
+  exec { "REBOOT_${decom::certname}":
     command => '/usr/bin/reboot --force',
   }
 }
