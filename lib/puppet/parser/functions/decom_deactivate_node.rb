@@ -4,7 +4,7 @@ module Puppet::Parser::Functions
     Deactivates a server in PuppetDB
     ENDHEREDOC
 
-    unless arrays.length == 1
+    unless args.length == 1
       raise Puppet::ParseError, ("decom_deactivate_node(): Expects only 1 argument")
     end
 
