@@ -47,11 +47,13 @@ module Puppet::Parser::Functions
       request = Net::HTTP::Put.new("/#{env}/certificate_status/#{cert}", initheader = { 'Content-Type' => 'text/pson'})
       request.body = '{"desired_state":"revoked"}'
       response = http.request(request)
-      response.code == '200' or raise Puppet::ParseError, "decom_clean_cert(): failed to revoke certificate. Response #{response.code}."
+      (response.code.to_i >= 200 and response.code.to_i <= 299) or 
+       raise Puppet::ParseError, "decom_clean_cert(): failed to revoke certificate. Response #{response.code}."
 
       request = Net::HTTP::Delete.new("/#{env}/certificate_status/#{cert}", initheader = { 'Accept' => 'pson'})
       response = http.request(request)
-      response.code == '200' or raise Puppet::ParseError, "decom_clean_cert(): failed to delete certificate. Response #{response.code}."
+      (response.code.to_i >= 200 and response.code.to_i <= 299) or 
+        raise Puppet::ParseError, "decom_clean_cert(): failed to delete certificate. Response #{response.code}."
     end
   end
 end

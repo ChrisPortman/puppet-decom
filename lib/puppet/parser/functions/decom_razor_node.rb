@@ -33,7 +33,8 @@ module Puppet::Parser::Functions
 
       request.body = JSON.dump({'name' => "node#{node}"})
       response = http.request(request)
-      response.code == '200' or raise Puppet::ParseError, "decom_razor_node(): failed to #{action} node. Response #{response.code}."
+      (response.code.to_i >= 200 and response.code.to_i <= 299) or 
+        raise Puppet::ParseError, "decom_razor_node(): failed to #{action} node. Response #{response.code}."
     end
   end
 end
