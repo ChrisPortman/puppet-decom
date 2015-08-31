@@ -1,6 +1,7 @@
 class decom (
   $mode,     #decommission|reinstall
   $confirm,  #Must match the certname
+  $razor_node,
   $ca_host,
   $razor_host,
 ) {
