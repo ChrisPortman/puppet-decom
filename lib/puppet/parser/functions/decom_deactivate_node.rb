@@ -12,7 +12,7 @@ module Puppet::Parser::Functions
 
     #Queue the command and delay it for 2 mins.  This will ensure that the deactivation occures after
     #the catalog compilation has finished.  If we do it immediately, the catalog caching will revive the node.
-    cmd = "echo 'puppet node deactivate #{cert}' | at now + 2 minutes"
+    cmd = "echo 'puppet node --confdir /etc/puppetlabs/puppet/ deactivate #{cert}' | at now + 1 minutes"
     info("Deactivating node with command: #{cmd}")
     %x{ #{cmd} }
   end
