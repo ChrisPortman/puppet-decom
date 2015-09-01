@@ -12,8 +12,8 @@ class decom::decommission {
   #Clean cert
   decom_clean_cert($decom::certname, $::environment, $decom::ca_host)
 
-  exec { "REBOOT_${decom::certname}":
-    command => '/usr/bin/reboot --force',
+  exec { "SHUTDOWN_${decom::certname}":
+    command => '/usr/bin/halt --force',
     require => Exec["DHCP_RELEASE_${decom::certname}"],
   }
 }
