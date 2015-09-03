@@ -44,7 +44,7 @@ class decom::decommission {
   }
 
   exec { "SHUTDOWN_${decom::certname}":
-    command => '/usr/bin/halt --force',
+    command => '/usr/bin/halt -p',
   }
 }
 
