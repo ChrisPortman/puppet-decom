@@ -15,7 +15,12 @@ It has to modes:
       * Release any DHCP leases
       * Shutdown the server
 
-Examples:
+Note that the cleaning of certs, deactivation in PuppetDB and setting the node state in razor are processes that occur in custom functions.  Therefore these actions occur on the Puppet Master compiling the catalog.  This avoids the requirement of the server being decommissioned/reinstalled, requiring network access directly to the CA/PuppetDB/Razor server, which in distributed environment (like mine) may not be possible.  Only the Maaster compiling the catalog will need this access (which it should have anyway).
+
+## Requirements
+The Puppet masters will require the atd service installed and running.  This is required so that the Masters can queue delayed execution of the deactivation process.  If this process occurs during the catalog compilation, the caching of the catalog may revive it.  Therefore its delayed for a minute so that it occurs well after the catalog compilation has completed and after the server has recieved it and rebooted/shutdown.
+
+## Examples
 ```
 # Decommission a server
 class { 'decom':
