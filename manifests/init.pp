@@ -4,6 +4,9 @@ class decom (
   $razor_node,
   $ca_host,
   $razor_host,
+  $enable_cert_clean     = true,
+  $enable_razor_update   = true,
+  $enable_puppetdb_clean = true,
 ) {
 
   validate_string($mode, $confirm)

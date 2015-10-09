@@ -19,7 +19,8 @@ module Puppet::Parser::Functions
     host.is_a?(String)   or raise Puppet::ParseError, "decom_clean_cert(): third argument must be a string"
 
     /^\d+$/.match(node) or raise Puppet::ParseError, 'decom_razor_node(): first argument must be a number'
-    ['decommission', 'reinstall'].include?(action) or raise Puppet::ParseError, 'decom_razor_node(): second argument must be one of "reinstall" or "decommission".'
+    ['decommission', 'reinstall'].include?(action) or
+      raise Puppet::ParseError, 'decom_razor_node(): second argument must be one of "reinstall" or "decommission".'
 
     Net::HTTP.start(host) do |http|
       case action
@@ -33,7 +34,7 @@ module Puppet::Parser::Functions
 
       request.body = JSON.dump({'name' => "node#{node}"})
       response = http.request(request)
-      (response.code.to_i >= 200 and response.code.to_i <= 299) or 
+      (response.code.to_i >= 200 and response.code.to_i <= 299) or
         raise Puppet::ParseError, "decom_razor_node(): failed to #{action} node. Response #{response.code}."
     end
   end
