@@ -22,30 +22,30 @@ class decom::decommission {
   $generic_lease_file = '/var/lib/dhclient/dhclient.leases'
 
   exec { "DHCP_RELEASE_${decom::certname}-1":
-    command => "dhclient -cf $eth0_conf_file -lf $eth0_lease_file -r",
-    path    => "/usr/bin:/usr/sbin:/sbin:/bin",
-    onlyif  => [ "test -f  $eth0_conf_file", "test -f $eth0_lease_file" ],
+    command => "dhclient -cf ${eth0_conf_file}-lf ${eth0_lease_file}-r",
+    path    => '/usr/bin:/usr/sbin:/sbin:/bin',
+    onlyif  => [ "test -f  ${eth0_conf_file}", "test -f ${eth0_lease_file}" ],
     before  => Exec["SHUTDOWN_${decom::certname}"],
   }
 
   exec { "DHCP_RELEASE_${decom::certname}-2":
-    command => "dhclient -cf $generic_conf_file -lf $generic_lease_file -r",
-    path    => "/usr/bin:/usr/sbin:/sbin:/bin",
-    onlyif  => [ "test -f  $generic_conf_file", "test -f $generic_lease_file" ],
+    command => "dhclient -cf ${generic_conf_file}-lf ${generic_lease_file}-r",
+    path    => '/usr/bin:/usr/sbin:/sbin:/bin',
+    onlyif  => [ "test -f  ${generic_conf_file}", "test -f ${generic_lease_file}" ],
     before  => Exec["SHUTDOWN_${decom::certname}"],
   }
 
   exec { "DHCP_RELEASE_${decom::certname}-3":
-    command => "dhclient -cf $generic_conf_file -lf $eth0_lease_file -r",
-    path    => "/usr/bin:/usr/sbin:/sbin:/bin",
-    onlyif  => [ "test -f  $generic_conf_file", "test -f $eth0_lease_file" ],
+    command => "dhclient -cf ${generic_conf_file}-lf ${eth0_lease_file}-r",
+    path    => '/usr/bin:/usr/sbin:/sbin:/bin',
+    onlyif  => [ "test -f  ${generic_conf_file}", "test -f ${eth0_lease_file}" ],
     before  => Exec["SHUTDOWN_${decom::certname}"],
   }
 
   exec { "DHCP_RELEASE_${decom::certname}-4":
-    command => "dhclient -cf $eth0_conf_file -lf $generic_lease_file -r",
-    path    => "/usr/bin:/usr/sbin:/sbin:/bin",
-    onlyif  => [ "test -f  $eth0_conf_file", "test -f $generic_lease_file" ],
+    command => "dhclient -cf ${eth0_conf_file}-lf ${generic_lease_file}-r",
+    path    => '/usr/bin:/usr/sbin:/sbin:/bin',
+    onlyif  => [ "test -f  ${eth0_conf_file}", "test -f ${generic_lease_file}" ],
     before  => Exec["SHUTDOWN_${decom::certname}"],
   }
 
